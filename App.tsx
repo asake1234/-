@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { 
   Award, 
@@ -29,7 +30,8 @@ import {
   Image as ImageIcon,
   BookOpen,
   Upload,
-  Link as LinkIcon
+  Link as LinkIcon,
+  Sparkles
 } from 'lucide-react';
 import { 
   BarChart as RechartsBarChart, 
@@ -64,7 +66,7 @@ const iconMap: Record<string, any> = {
 };
 
 const SectionHeader: React.FC<{ title: string; subtitle?: string; accent?: string }> = ({ title, subtitle, accent = COLORS.RED }) => (
-  <div className="mb-10">
+  <div className="mb-10 text-left">
     <div className="flex items-center space-x-4 mb-2">
       <div className="h-8 w-1.5" style={{ backgroundColor: accent }}></div>
       <h2 className="text-3xl font-serif-zh font-bold text-guofeng-ink">{title}</h2>
@@ -343,6 +345,7 @@ const App: React.FC = () => {
         <section id="ladder" className="mb-20">
           <SectionHeader title="七级加盟晋升体系" subtitle="深度解析各层级的门槛、权益与战略定位" />
           <div className="flex flex-col lg:flex-row gap-8">
+            {/* Sidebar selection */}
             <div className="lg:w-1/3 bg-white rounded-3xl shadow-lg overflow-hidden flex flex-col border border-gray-100 h-fit sticky top-24">
               {LEVELS.map((level) => {
                 const Icon = iconMap[level.icon] || User;
@@ -360,7 +363,7 @@ const App: React.FC = () => {
                     }`}>
                       <Icon size={20} />
                     </div>
-                    <div>
+                    <div className="flex-1">
                       <div className={`text-[10px] font-bold uppercase mb-1 ${isActive ? 'text-guofeng-red' : 'text-gray-400'}`}>Level {level.id}</div>
                       <div className={`font-bold text-lg ${isActive ? 'text-guofeng-ink' : 'text-gray-500'}`}>{level.title}</div>
                     </div>
@@ -370,41 +373,43 @@ const App: React.FC = () => {
               })}
             </div>
 
-            <div className="lg:w-2/3 bg-white rounded-3xl shadow-xl p-12 border border-gray-100 relative overflow-hidden">
+            {/* Content Details */}
+            <div className="lg:w-2/3 bg-white rounded-3xl shadow-xl p-8 md:p-12 border border-gray-100 relative overflow-hidden">
                <div className="absolute top-20 right-0 opacity-[0.03] pointer-events-none scale-150">
                  <ActiveIcon size={400} />
                </div>
                
-               <div className="relative z-10">
-                 <div className="flex justify-between items-start mb-10 text-left">
+               <div className="relative z-10 text-left">
+                 <div className="flex justify-between items-start mb-10">
                    <div>
                      <div className="inline-flex items-center space-x-2 px-3 py-1 bg-guofeng-red/10 text-guofeng-red text-xs font-bold rounded-full mb-4">
                        <Zap size={12} />
                        <span>STRATEGIC LEVEL {activeLevel.id}</span>
                      </div>
-                     <h3 className="text-5xl font-serif-zh font-bold text-guofeng-ink">{activeLevel.title}</h3>
+                     <h3 className="text-4xl md:text-5xl font-serif-zh font-bold text-guofeng-ink">{activeLevel.title}</h3>
                    </div>
-                   <div className="hidden md:block w-24 h-24 border-2 border-dashed border-gray-100 rounded-full flex items-center justify-center">
+                   <div className="hidden md:block w-20 h-20 border-2 border-dashed border-gray-100 rounded-full flex items-center justify-center">
                      <div className="text-2xl font-serif-zh font-bold text-gray-200">#{activeLevel.id}</div>
                    </div>
                  </div>
                  
-                 <div className="mb-12">
+                 {/* Image Area */}
+                 <div className="mb-10">
                    <div className="flex items-center justify-between mb-4">
                       <div className="flex items-center space-x-3 text-guofeng-gold font-bold uppercase tracking-widest text-sm">
                         <ImageIcon size={18} />
                         <span>实景/宣传展示区域</span>
                       </div>
                       <div className="flex space-x-2">
-                        <button onClick={() => fileInputRef.current?.click()} className="flex items-center space-x-1 px-3 py-1.5 bg-guofeng-bg border border-gray-200 rounded-lg text-[10px] font-bold text-guofeng-ink">
+                        <button onClick={() => fileInputRef.current?.click()} className="flex items-center space-x-1 px-3 py-1.5 bg-guofeng-bg border border-gray-200 rounded-lg text-[10px] font-bold text-guofeng-ink hover:bg-gray-50">
                           <Upload size={12} /> <span>上传</span>
                         </button>
-                        <button onClick={handleImageUrlPrompt} className="flex items-center space-x-1 px-3 py-1.5 bg-guofeng-bg border border-gray-200 rounded-lg text-[10px] font-bold text-guofeng-ink">
+                        <button onClick={handleImageUrlPrompt} className="flex items-center space-x-1 px-3 py-1.5 bg-guofeng-bg border border-gray-200 rounded-lg text-[10px] font-bold text-guofeng-ink hover:bg-gray-50">
                           <LinkIcon size={12} /> <span>链接</span>
                         </button>
                       </div>
                    </div>
-                   <div className="relative group min-h-[200px] rounded-2xl border-2 border-dashed border-gray-100 flex items-center justify-center overflow-hidden">
+                   <div className="relative group min-h-[220px] rounded-2xl border-2 border-dashed border-gray-100 flex items-center justify-center overflow-hidden bg-gray-50/50">
                      {levelImages[activeLevel.id] ? (
                        <img src={levelImages[activeLevel.id]} className="w-full h-full object-cover" alt="preview" />
                      ) : (
@@ -416,18 +421,37 @@ const App: React.FC = () => {
                    </div>
                  </div>
 
-                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-12 text-left">
+                 {/* Privileges List */}
+                 {activeLevel.privileges && activeLevel.privileges.length > 0 && (
+                    <div className="mb-12">
+                      <div className="flex items-center space-x-3 text-guofeng-jade font-bold uppercase tracking-widest text-sm mb-6">
+                        <Sparkles size={18} />
+                        <span>核心加盟权益</span>
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {activeLevel.privileges.map((priv, idx) => (
+                          <div key={idx} className="flex items-start p-4 bg-guofeng-bg border border-gray-50 rounded-xl">
+                            <CheckCircle2 size={18} className="mr-3 mt-0.5 flex-shrink-0" style={{ color: activeLevel.color }} />
+                            <span className="text-sm text-guofeng-ink leading-relaxed">{priv}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                 )}
+
+                 {/* Conditions and Role */}
+                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-8 border-t border-gray-100">
                    <div className="space-y-4">
-                     <div className="flex items-center space-x-3 text-guofeng-red font-bold uppercase text-sm">
-                       <Target size={18} /> <span>晋升门槛</span>
+                     <div className="flex items-center space-x-3 text-guofeng-red font-bold uppercase text-xs">
+                       <Target size={16} /> <span>晋升门槛</span>
                      </div>
-                     <p className="text-xl font-bold text-guofeng-ink">{activeLevel.condition}</p>
+                     <p className="text-lg font-bold text-guofeng-ink">{activeLevel.condition}</p>
                    </div>
                    <div className="space-y-4">
-                     <div className="flex items-center space-x-3 text-guofeng-jade font-bold uppercase text-sm">
-                       <ShieldCheck size={18} /> <span>战略定位</span>
+                     <div className="flex items-center space-x-3 text-guofeng-sub font-bold uppercase text-xs">
+                       <ShieldCheck size={16} /> <span>战略定位</span>
                      </div>
-                     <p className="text-lg text-guofeng-sub italic">“{activeLevel.strategicRole}”</p>
+                     <p className="text-md text-guofeng-sub italic leading-relaxed">“{activeLevel.strategicRole}”</p>
                    </div>
                  </div>
                </div>

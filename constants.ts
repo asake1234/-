@@ -24,11 +24,11 @@ export const LEVELS: LevelDetail[] = [
   {
     id: 2,
     title: "非遗传播大使 (VIP)",
-    condition: "支付 ¥20,000 保证金（可全额转为货款）或 Level 1 消费满额晋升",
+    condition: "支付 ¥20,000 货款预付金或 Level 1 消费满额晋升",
     benefit: "核心创业门槛，享受极致拿货折扣与高额分佣。",
     color: "#4F796C",
     icon: "Award",
-    kpiDetails: ["门槛 ¥20,000 (保证金或消费)", "参加大使岗前培训"],
+    kpiDetails: ["门槛 ¥20,000 (货款预付金或消费)", "参加大使岗前培训"],
     privileges: [
       "极低折扣：享受吊牌价5-6折拿货权限",
       "多元收益：直接推荐新大使获得20%奖励 (¥4,000)；向非VIP客户销售产品亦可获得高额零售分佣",
@@ -39,7 +39,7 @@ export const LEVELS: LevelDetail[] = [
   },
   {
     id: 3,
-    title: "区域运营代理",
+    title: "区域合作商",
     condition: "年度累计结算额达到 ¥600,000",
     benefit: "拥有特定区域的市场开发权与管理权，收益多元化。",
     color: "#60A5FA",
@@ -54,7 +54,7 @@ export const LEVELS: LevelDetail[] = [
   },
   {
     id: 4,
-    title: "非遗馆加盟商",
+    title: "国风非遗馆",
     condition: "年销 ¥150万 + 拥有不低于50平米的实体空间",
     benefit: "品牌实体化的重要载体，享受全方位的开店支持。",
     color: "#6366F1",
