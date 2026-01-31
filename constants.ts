@@ -76,7 +76,7 @@ export const LEVELS: LevelDetail[] = [
     icon: "Building",
     kpiDetails: ["累计销售 ¥300万", "具备跨区域管理能力"],
     privileges: [
-      "利润分成：享受该地区分公司年度净利润的40%分红",
+      "利润分成：享受该地区分公司年度净利润 of 40% 分红",
       "管理权限：拥有该地区加盟审核的一票否决权",
       "总部内刊：进入品牌核心策略委员会（预备级）"
     ],
@@ -115,6 +115,7 @@ export const LEVELS: LevelDetail[] = [
 
 export const NAV_SECTIONS = [
   { id: 'ecosystem', title: '生态矩阵' },
+  { id: 'live-system', title: '直播分佣' },
   { id: 'ladder', title: '晋升体系' },
   { id: 'model', title: '盈利模型' }
 ];

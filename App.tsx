@@ -16,7 +16,24 @@ import {
   TrendingUp,
   Target,
   ShieldCheck,
-  Zap
+  Zap,
+  Smartphone,
+  UserPlus,
+  Share2,
+  ShoppingBag,
+  Wallet,
+  PlayCircle,
+  Clock,
+  LayoutGrid,
+  Camera,
+  Home,
+  FileText,
+  AlertCircle,
+  Users2,
+  Image as ImageIcon,
+  BookOpen,
+  Upload,
+  Link
 } from 'lucide-react';
 import { 
   BarChart as RechartsBarChart, 
@@ -61,8 +78,36 @@ const SectionHeader: React.FC<{ title: string; subtitle?: string; accent?: strin
 );
 
 const App: React.FC = () => {
-  const [activeLevel, setActiveLevel] = useState<LevelDetail>(LEVELS[1]);
+  const [activeLevelId, setActiveLevelId] = useState<number>(LEVELS[1].id);
+  const [levelImages, setLevelImages] = useState<Record<number, string>>({});
   const [activeNav, setActiveNav] = useState('ecosystem');
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const activeLevel = LEVELS.find(l => l.id === activeLevelId) || LEVELS[1];
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setLevelImages(prev => ({
+          ...prev,
+          [activeLevelId]: reader.result as string
+        }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleImageUrlPrompt = () => {
+    const url = prompt("请输入图片链接 (URL):");
+    if (url) {
+      setLevelImages(prev => ({
+        ...prev,
+        [activeLevelId]: url
+      }));
+    }
+  };
 
   const commissionData = [
     { name: '分配结构', C: 4000, B: 1000, Company: 15000 }
@@ -106,6 +151,14 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen pb-20 bg-guofeng-bg">
+      <input 
+        type="file" 
+        ref={fileInputRef} 
+        className="hidden" 
+        accept="image/*" 
+        onChange={handleImageUpload} 
+      />
+
       {/* Top Sticky Navigation */}
       <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100 shadow-sm">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
@@ -202,7 +255,243 @@ const App: React.FC = () => {
           </div>
         </section>
 
-        {/* Section 2: Growth Ladder - Refined */}
+        {/* Section 2: Central Live Room & Commission Process */}
+        <section id="live-system" className="bg-white rounded-3xl shadow-xl p-10 mb-16 border border-gray-100">
+          <SectionHeader title="中央直播间与分佣全流程" subtitle="打通线上销售闭环，实现从注册到提现的极简数字化路径" />
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div className="space-y-8">
+              <div className="p-6 bg-guofeng-bg rounded-2xl border-l-4 border-guofeng-red">
+                <div className="flex items-center space-x-3 mb-4">
+                  <PlayCircle className="text-guofeng-red" size={24} />
+                  <h4 className="font-bold text-lg text-guofeng-ink">线上销售分佣体系</h4>
+                </div>
+                <p className="text-sm text-guofeng-sub leading-relaxed">
+                  中央直播间不仅是成交中心，更是全员分润的引擎。通过小程序赋能，每一位“搭配师”都能将直播间的高质量内容转化为个人私域的变现动力。非VIP客户的每一笔订单，都将通过系统自动归集并触发实时分佣奖励。
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 gap-4">
+                <div className="flex items-start space-x-4 p-4 bg-white border border-gray-100 rounded-xl shadow-sm">
+                  <div className="w-10 h-10 rounded-full bg-guofeng-gold/10 text-guofeng-gold flex items-center justify-center flex-shrink-0 font-bold">1</div>
+                  <div>
+                    <h5 className="font-bold text-guofeng-ink flex items-center">注册经销商 <UserPlus size={16} className="ml-2 text-guofeng-sub"/></h5>
+                    <p className="text-xs text-guofeng-sub mt-1">进入小程序 -> 点击“我的” -> 申请成为“搭配师”。审核通过后身份自动升级为经销商，界面显示“搭配师”标识。</p>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-4 p-4 bg-white border border-gray-100 rounded-xl shadow-sm">
+                  <div className="w-10 h-10 rounded-full bg-guofeng-gold/10 text-guofeng-gold flex items-center justify-center flex-shrink-0 font-bold">2</div>
+                  <div>
+                    <h5 className="font-bold text-guofeng-ink flex items-center">一键分享 <Share2 size={16} className="ml-2 text-guofeng-sub"/></h5>
+                    <p className="text-xs text-guofeng-sub mt-1">进入任何商品详情页，点击下方的“分享”按钮。支持海报生成或直接转发给好友/群聊。</p>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-4 p-4 bg-white border border-gray-100 rounded-xl shadow-sm">
+                  <div className="w-10 h-10 rounded-full bg-guofeng-gold/10 text-guofeng-gold flex items-center justify-center flex-shrink-0 font-bold">3</div>
+                  <div>
+                    <h5 className="font-bold text-guofeng-ink flex items-center">极速购买 <ShoppingBag size={16} className="ml-2 text-guofeng-sub"/></h5>
+                    <p className="text-xs text-guofeng-sub mt-1">客户点击链接，直接进入微信小店支付。无需跳转繁琐环节，确保转化率最大化。</p>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-4 p-4 bg-white border border-gray-100 rounded-xl shadow-sm">
+                  <div className="w-10 h-10 rounded-full bg-guofeng-gold/10 text-guofeng-gold flex items-center justify-center flex-shrink-0 font-bold">4</div>
+                  <div>
+                    <h5 className="font-bold text-guofeng-ink flex items-center">返现提现 <Wallet size={16} className="ml-2 text-guofeng-sub"/></h5>
+                    <p className="text-xs text-guofeng-sub mt-1">成为VIP后，所有收益在“个人主页”实时可见。待客户确认收货后，佣金转入余额，点击即可提现至微信钱包。</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="relative">
+              <div className="bg-[#1a1a1a] rounded-[3.5rem] p-4 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] border-[12px] border-[#222] aspect-[9/19] max-w-[320px] mx-auto relative overflow-hidden">
+                <div className="w-full h-full bg-[#f8f8f8] rounded-[2.8rem] overflow-hidden flex flex-col relative text-black">
+                  
+                  {/* Status Bar */}
+                  <div className="h-10 px-8 flex justify-between items-center bg-white">
+                    <span className="text-[10px] font-bold">9:41</span>
+                    <div className="flex space-x-1">
+                      <div className="w-3 h-3 rounded-full bg-black/10"></div>
+                      <div className="w-3 h-3 rounded-full bg-black/10"></div>
+                    </div>
+                  </div>
+
+                  {/* Header */}
+                  <div className="px-4 py-3 bg-white flex items-center justify-between border-b border-gray-100">
+                    <h6 className="text-sm font-bold">我的推广</h6>
+                    <div className="flex items-center space-x-2">
+                       <div className="flex bg-gray-100 rounded-md p-0.5">
+                         <span className="bg-[#ff4d4f] text-white px-2 py-0.5 rounded-md text-[9px]">全部</span>
+                         <span className="text-gray-500 px-2 py-0.5 text-[9px]">今日</span>
+                         <span className="text-gray-500 px-2 py-0.5 text-[9px]">7日</span>
+                         <span className="text-gray-500 px-2 py-0.5 text-[9px]">30日</span>
+                       </div>
+                       <span className="text-[9px] text-gray-400">全部订单 &gt;</span>
+                    </div>
+                  </div>
+
+                  <div className="flex-1 overflow-y-auto bg-[#fdfaf8]">
+                    {/* Stats Grid */}
+                    <div className="grid grid-cols-2 gap-2 p-3">
+                      <div className="bg-white p-3 rounded-xl shadow-sm border border-gray-50">
+                        <div className="text-[9px] text-gray-400 flex items-center mb-1">
+                          <span className="w-1 h-3 bg-[#ff4d4f] mr-1 rounded-sm"></span>
+                          成交总额 (元) <Info size={10} className="ml-1 opacity-30" />
+                        </div>
+                        <div className="text-sm font-bold">288.88</div>
+                      </div>
+                      <div className="bg-white p-3 rounded-xl shadow-sm border border-gray-50">
+                        <div className="text-[9px] text-gray-400 flex items-center mb-1">
+                          <span className="w-1 h-3 bg-[#ff4d4f] mr-1 rounded-sm"></span>
+                          成交订单 (笔) <Info size={10} className="ml-1 opacity-30" />
+                        </div>
+                        <div className="text-sm font-bold">1</div>
+                      </div>
+                      <div className="bg-white p-3 rounded-xl shadow-sm border border-gray-50">
+                        <div className="text-[9px] text-gray-400 flex items-center mb-1">
+                          <span className="w-1 h-3 bg-[#ff4d4f] mr-1 rounded-sm"></span>
+                          推客佣金 (元) <Info size={10} className="ml-1 opacity-30" />
+                        </div>
+                        <div className="text-sm font-bold">2.88</div>
+                      </div>
+                      <div className="bg-white p-3 rounded-xl shadow-sm border border-gray-50">
+                        <div className="text-[9px] text-gray-400 flex items-center mb-1">
+                          <span className="w-1 h-3 bg-[#ff4d4f] mr-1 rounded-sm"></span>
+                          邀请推客 (人) <Info size={10} className="ml-1 opacity-30" />
+                        </div>
+                        <div className="text-sm font-bold">0</div>
+                      </div>
+                    </div>
+
+                    {/* Commission Card */}
+                    <div className="px-3 mb-4">
+                      <div className="bg-gradient-to-br from-[#ff5e62] to-[#ff4d4f] rounded-2xl p-5 text-white shadow-lg relative overflow-hidden">
+                        <div className="flex justify-between items-start mb-6">
+                          <div>
+                            <div className="text-2xl font-bold mb-1">¥ 0.00</div>
+                            <div className="text-[10px] opacity-80 flex items-center">可提现佣金 (元) <Info size={10} className="ml-1" /></div>
+                          </div>
+                          <div className="text-[9px] bg-white/20 px-2 py-1 rounded-full">提现记录 &gt;</div>
+                        </div>
+                        
+                        <div className="grid grid-cols-3 gap-2 border-t border-white/20 pt-4 mb-4 text-center">
+                          <div>
+                            <div className="text-[9px] opacity-70 mb-1">待结算佣金</div>
+                            <div className="text-xs font-bold">2.88</div>
+                          </div>
+                          <div>
+                            <div className="text-[9px] opacity-70 mb-1">累计佣金</div>
+                            <div className="text-xs font-bold">2.88</div>
+                          </div>
+                          <div>
+                            <div className="text-[9px] opacity-70 mb-1">已提现佣金</div>
+                            <div className="text-xs font-bold">0.00</div>
+                          </div>
+                        </div>
+
+                        <button className="w-full bg-white text-[#ff4d4f] font-bold py-2.5 rounded-full text-xs shadow-md active:scale-95 transition-transform">
+                          立即提现
+                        </button>
+
+                        <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
+                      </div>
+                    </div>
+
+                    {/* Quick Actions */}
+                    <div className="px-3 grid grid-cols-3 gap-3 mb-4">
+                      <div className="bg-blue-50/50 p-3 rounded-xl text-center border border-blue-100/50">
+                        <div className="w-8 h-8 bg-blue-100 rounded-full mx-auto flex items-center justify-center mb-1">
+                          <Users2 size={16} className="text-blue-500" />
+                        </div>
+                        <div className="text-[10px] font-bold">我的邀请</div>
+                        <div className="text-[8px] text-gray-400">0位好友</div>
+                      </div>
+                      <div className="bg-yellow-50/50 p-3 rounded-xl text-center border border-yellow-100/50">
+                        <div className="w-8 h-8 bg-yellow-100 rounded-full mx-auto flex items-center justify-center mb-1">
+                          <ImageIcon size={16} className="text-yellow-600" />
+                        </div>
+                        <div className="text-[10px] font-bold">邀请海报</div>
+                        <div className="text-[8px] text-gray-400">锁定成员</div>
+                      </div>
+                      <div className="bg-pink-50/50 p-3 rounded-xl text-center border border-pink-100/50">
+                        <div className="w-8 h-8 bg-pink-100 rounded-full mx-auto flex items-center justify-center mb-1">
+                          <BookOpen size={16} className="text-pink-500" />
+                        </div>
+                        <div className="text-[10px] font-bold">带货攻略</div>
+                        <div className="text-[8px] text-gray-400">如何赚钱</div>
+                      </div>
+                    </div>
+
+                    {/* Order Tabs */}
+                    <div className="px-3 mb-10">
+                      <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-50">
+                        <h6 className="text-[10px] font-bold mb-4">推广订单</h6>
+                        <div className="grid grid-cols-4 gap-2 text-center">
+                          <div className="flex flex-col items-center">
+                            <div className="w-10 h-10 bg-pink-50 rounded-full flex items-center justify-center mb-1">
+                              <AlertCircle size={18} className="text-pink-500" />
+                            </div>
+                            <span className="text-[9px] text-gray-500">未结算</span>
+                          </div>
+                          <div className="flex flex-col items-center">
+                            <div className="w-10 h-10 bg-orange-50 rounded-full flex items-center justify-center mb-1">
+                              <CheckCircle2 size={18} className="text-orange-400" />
+                            </div>
+                            <span className="text-[9px] text-gray-500">已结算</span>
+                          </div>
+                          <div className="flex flex-col items-center">
+                            <div className="w-10 h-10 bg-purple-50 rounded-full flex items-center justify-center mb-1">
+                              <Clock size={18} className="text-purple-400" />
+                            </div>
+                            <span className="text-[9px] text-gray-500">取消结算</span>
+                          </div>
+                          <div className="flex flex-col items-center">
+                            <div className="w-10 h-10 bg-blue-50 rounded-full flex items-center justify-center mb-1">
+                              <LayoutGrid size={18} className="text-blue-400" />
+                            </div>
+                            <span className="text-[9px] text-gray-500">全部</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Tab Bar */}
+                  <div className="h-14 bg-white border-t border-gray-100 flex justify-around items-center px-4">
+                    <div className="flex flex-col items-center opacity-30">
+                      <Home size={18} />
+                      <span className="text-[8px] mt-1">首页</span>
+                    </div>
+                    <div className="flex flex-col items-center opacity-30">
+                      <LayoutGrid size={18} />
+                      <span className="text-[8px] mt-1">分类</span>
+                    </div>
+                    <div className="flex flex-col items-center opacity-30">
+                      <Camera size={18} />
+                      <span className="text-[8px] mt-1">发圈</span>
+                    </div>
+                    <div className="flex flex-col items-center opacity-30">
+                      <PlayCircle size={18} />
+                      <span className="text-[8px] mt-1">直播</span>
+                    </div>
+                    <div className="flex flex-col items-center text-[#ff4d4f]">
+                      <User size={18} />
+                      <span className="text-[8px] mt-1 font-bold">我的</span>
+                    </div>
+                  </div>
+
+                </div>
+                {/* Dynamic Island / Notch */}
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-[#222] rounded-b-2xl"></div>
+              </div>
+              
+              {/* Decorative Glow */}
+              <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-guofeng-red opacity-10 rounded-full blur-[80px]"></div>
+            </div>
+          </div>
+        </section>
+
+        {/* Section 3: Growth Ladder - Refined */}
         <section id="ladder" className="mb-20">
           <SectionHeader title="七级加盟晋升体系" subtitle="深度解析各层级的门槛、权益与战略定位，确保每一分投入都有回响" />
           <div className="flex flex-col lg:flex-row gap-8">
@@ -210,11 +499,11 @@ const App: React.FC = () => {
             <div className="lg:w-1/3 bg-white rounded-3xl shadow-lg overflow-hidden flex flex-col border border-gray-100 h-fit sticky top-24">
               {LEVELS.map((level) => {
                 const Icon = iconMap[level.icon];
-                const isActive = activeLevel.id === level.id;
+                const isActive = activeLevelId === level.id;
                 return (
                   <button
                     key={level.id}
-                    onClick={() => setActiveLevel(level)}
+                    onClick={() => setActiveLevelId(level.id)}
                     className={`flex items-center p-6 text-left transition-all border-l-4 ${
                       isActive ? 'bg-guofeng-bg border-guofeng-red' : 'border-transparent hover:bg-gray-50'
                     }`}
@@ -255,6 +544,57 @@ const App: React.FC = () => {
                    </div>
                  </div>
                  
+                 {/* CUSTOM IMAGE AREA - New Feature */}
+                 <div className="mb-12">
+                   <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center space-x-3 text-guofeng-gold font-bold uppercase tracking-widest text-sm">
+                        <ImageIcon size={18} />
+                        <span>实景/宣传展示区域</span>
+                      </div>
+                      <div className="flex space-x-2">
+                        <button 
+                          onClick={() => fileInputRef.current?.click()}
+                          className="flex items-center space-x-1 px-3 py-1.5 bg-guofeng-bg border border-gray-200 rounded-lg text-[10px] font-bold text-guofeng-ink hover:bg-gray-100 transition-colors"
+                        >
+                          <Upload size={12} />
+                          <span>插入本地图片</span>
+                        </button>
+                        <button 
+                          onClick={handleImageUrlPrompt}
+                          className="flex items-center space-x-1 px-3 py-1.5 bg-guofeng-bg border border-gray-200 rounded-lg text-[10px] font-bold text-guofeng-ink hover:bg-gray-100 transition-colors"
+                        >
+                          <Link size={12} />
+                          <span>链接插入</span>
+                        </button>
+                      </div>
+                   </div>
+                   <div className="relative group">
+                     {levelImages[activeLevel.id] ? (
+                       <div className="w-full aspect-video rounded-2xl overflow-hidden shadow-inner border border-gray-100 bg-gray-50 relative">
+                         <img 
+                          src={levelImages[activeLevel.id]} 
+                          alt={`${activeLevel.title} display`} 
+                          className="w-full h-full object-cover"
+                         />
+                         <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+                            <span className="text-white text-xs font-bold border border-white/30 px-4 py-2 rounded-full backdrop-blur-sm">点击上方按钮更换图片</span>
+                         </div>
+                       </div>
+                     ) : (
+                       <div 
+                        onClick={() => fileInputRef.current?.click()}
+                        className="w-full aspect-video rounded-2xl border-2 border-dashed border-gray-200 bg-gray-50 flex flex-col items-center justify-center cursor-pointer hover:border-guofeng-gold hover:bg-guofeng-bg transition-all group"
+                       >
+                         <div className="w-16 h-16 rounded-full bg-white shadow-sm flex items-center justify-center mb-4 text-gray-300 group-hover:text-guofeng-gold group-hover:scale-110 transition-all">
+                            <ImageIcon size={32} />
+                         </div>
+                         <div className="text-sm font-bold text-gray-400 group-hover:text-guofeng-gold">点击插入{activeLevel.title}实拍/宣传图</div>
+                         <div className="text-[10px] text-gray-300 mt-2">支持本地上传或输入外部链接</div>
+                       </div>
+                     )}
+                   </div>
+                 </div>
+
                  <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-12">
                    {/* KPI & Condition */}
                    <div className="space-y-6">
@@ -309,7 +649,7 @@ const App: React.FC = () => {
           </div>
         </section>
 
-        {/* Section 3: Financial Models */}
+        {/* Section 4: Financial Models */}
         <section id="model" className="mb-20">
           <SectionHeader title="盈利模型模拟" subtitle="透明的分润体系与持续的增长动力" />
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
