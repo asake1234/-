@@ -9,7 +9,7 @@ export interface LevelDetail {
   kpiDetails: string[];
   privileges: string[];
   strategicRole: string;
-  displayImage?: string; // Field for the custom level-specific image
+  displayImage?: string; 
 }
 
 export interface RoadmapItem {
