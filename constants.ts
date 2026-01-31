@@ -1,4 +1,3 @@
-
 import { LevelDetail } from './types';
 
 export const COLORS = {
@@ -11,24 +10,13 @@ export const COLORS = {
 
 export const LEVELS: LevelDetail[] = [
   {
-    id: 1,
-    title: "普通会员",
-    condition: "通过小程序或线下任意消费即可加入；累计消费满 ¥20,000 可晋升为非遗传播大使",
-    benefit: "获得基础会员身份，开启非遗美学之旅。",
-    color: "#E5E7EB",
-    icon: "User",
-    kpiDetails: ["单次消费 > ¥1", "累计消费满 ¥20,000 可晋升"],
-    privileges: [], 
-    strategicRole: "品牌的基础流量池，通过高频互动筛选并转化为“传播大使”。"
-  },
-  {
     id: 2,
     title: "非遗传播大使 (VIP)",
-    condition: "支付 ¥20,000 货款预付金或 Level 1 消费满额晋升",
+    condition: "支付 ¥20,000 货款预付金即可加入",
     benefit: "核心创业门槛，享受极致拿货折扣与高额分佣。",
     color: "#4F796C",
     icon: "Award",
-    kpiDetails: ["门槛 ¥20,000 (货款预付金或消费)", "参加大使岗前培训"],
+    kpiDetails: ["门槛 ¥20,000 (货款预付金)", "参加大使岗前培训"],
     privileges: [
       "极低折扣：享受吊牌价5-6折拿货权限",
       "多元收益：直接推荐新大使获得20%奖励 (¥4,000)；向非VIP客户销售产品亦可获得高额零售分佣",
@@ -53,22 +41,7 @@ export const LEVELS: LevelDetail[] = [
     strategicRole: "区域市场的“守护者”，负责维护当地品牌口碑与代理商协同。"
   },
   {
-    id: 4,
-    title: "国风非遗馆",
-    condition: "年销 ¥150万 + 拥有不低于50平米的实体空间",
-    benefit: "品牌实体化的重要载体，享受全方位的开店支持。",
-    color: "#6366F1",
-    icon: "Store",
-    kpiDetails: ["年销 ¥150万", "符合品牌SI视觉体系"],
-    privileges: [
-      "陈列指导：首席陈列师到店一对一视觉营销指导",
-      "智能系统：免费使用总部ERP及进销存数字化系统",
-      "品牌授牌：颁发“非遗香云纱文化传承馆”官方牌匾"
-    ],
-    strategicRole: "品牌服务与体验的“前哨站”，通过深度沉浸式场景提升客单价。"
-  },
-  {
-    id: 5,
+    id: 5, // 晋升为分公司合作伙伴
     title: "分公司合作伙伴",
     condition: "区域内管理10家以上非遗馆或年销累计 ¥300万",
     benefit: "由总部注资共同成立分公司，进入地区管理层。",
@@ -110,6 +83,21 @@ export const LEVELS: LevelDetail[] = [
       "传承权：股东身份及相关收益可依照法律规定进行家族传承"
     ],
     strategicRole: "品牌的“基石与归宿”，共同站在非遗复兴的顶峰。"
+  },
+  {
+    id: 4, // 特殊子节点
+    title: "国风非遗馆",
+    condition: "年销 ¥150万 + 拥有不低于500平米的实体空间",
+    benefit: "品牌实体化的重要载体，享受全方位的开店支持。",
+    color: "#6366F1",
+    icon: "Store",
+    kpiDetails: ["年销 ¥150万", "面积 ≥ 500㎡", "符合品牌SI视觉体系"],
+    privileges: [
+      "陈列指导：首席陈列师到店一对一视觉营销指导",
+      "智能系统：免费使用总部ERP及进销存数字化系统",
+      "品牌授牌：颁发“非遗香云纱文化传承馆”官方牌匾"
+    ],
+    strategicRole: "品牌服务与体验的“前哨站”，通过深度沉浸式场景提升客单价。"
   }
 ];
 

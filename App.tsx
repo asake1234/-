@@ -31,7 +31,8 @@ import {
   BookOpen,
   Upload,
   Link as LinkIcon,
-  Sparkles
+  Sparkles,
+  ChevronDown
 } from 'lucide-react';
 import { 
   BarChart as RechartsBarChart, 
@@ -82,6 +83,14 @@ const App: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const activeLevel = LEVELS.find(l => l.id === activeLevelId) || LEVELS[0];
+  const museumLevel = LEVELS.find(l => l.id === 4); // 特殊处理的非遗馆
+
+  // 过滤出主序列级别（排除 ID 4，按逻辑 ID 排序显示）
+  const mainLevels = LEVELS.filter(l => l.id !== 4).sort((a, b) => {
+    // 逻辑顺序：2, 3, 5, 6, 7
+    const order = [2, 3, 5, 6, 7];
+    return order.indexOf(a.id) - order.indexOf(b.id);
+  });
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -149,9 +158,14 @@ const App: React.FC = () => {
 
   const ActiveIcon = iconMap[activeLevel.icon] || User;
 
+  // 获取显示的级别数字逻辑
+  const getDisplayLevelNum = (id: number) => {
+    const orderMap: Record<number, number> = { 2: 1, 3: 2, 5: 3, 6: 4, 7: 5 };
+    return orderMap[id] || '馆';
+  };
+
   return (
     <div className="min-h-screen pb-20 bg-guofeng-bg antialiased text-left">
-      {/* Hidden file input for uploads */}
       <input 
         type="file" 
         ref={fileInputRef} 
@@ -160,7 +174,6 @@ const App: React.FC = () => {
         onChange={handleImageUpload} 
       />
 
-      {/* Top Sticky Navigation */}
       <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100 shadow-sm">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center space-x-2">
@@ -187,7 +200,6 @@ const App: React.FC = () => {
         </div>
       </nav>
 
-      {/* Hero Header */}
       <header className="bg-guofeng-ink text-white pt-24 pb-28 px-6 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-96 h-96 bg-guofeng-red opacity-10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl"></div>
         <div className="max-w-6xl mx-auto text-center relative z-10">
@@ -197,7 +209,7 @@ const App: React.FC = () => {
               “我的搭配师” <br/> 运营增长与晋升战略
             </h1>
             <p className="text-gray-400 max-w-2xl mx-auto text-lg mb-12">
-              重塑非遗香云纱商业生态：以“七级晋升”为核心，构建从公域流量到终身股东的价值共生闭环。
+              重塑非遗香云纱商业生态：以“晋升体系”为核心，构建从公域流量到终身股东的价值共生闭环。
             </p>
             <div className="flex flex-wrap justify-center gap-6">
               <div className="bg-white/5 border border-white/10 px-6 py-3 rounded-full flex items-center space-x-3">
@@ -215,7 +227,7 @@ const App: React.FC = () => {
 
       <main className="max-w-6xl mx-auto px-6 -mt-16">
         
-        {/* Section 1: Ecosystem */}
+        {/* Ecosystem Section */}
         <section id="ecosystem" className="bg-white rounded-3xl shadow-xl p-10 mb-16 border border-gray-100 relative overflow-hidden">
           <SectionHeader title="全域生态矩阵" subtitle="构建从短视频引流到实体馆沉淀的深度增长模型" />
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -255,12 +267,11 @@ const App: React.FC = () => {
           </div>
         </section>
 
-        {/* Section 2: Central Live Room & Commission Process */}
+        {/* Live System Section */}
         <section id="live-system" className="bg-white rounded-3xl shadow-xl p-10 mb-16 border border-gray-100">
           <SectionHeader title="中央直播间与分佣全流程" subtitle="打通线上销售闭环，实现从注册到提现的极简数字化路径" />
-          
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <div className="space-y-8">
+            <div className="space-y-8 text-left">
               <div className="p-6 bg-guofeng-bg rounded-2xl border-l-4 border-guofeng-red">
                 <div className="flex items-center space-x-3 mb-4">
                   <PlayCircle className="text-guofeng-red" size={24} />
@@ -270,7 +281,6 @@ const App: React.FC = () => {
                   中央直播间不仅是成交中心，更是全员分润的引擎。通过小程序赋能，每一位“搭配师”都能将直播间的高质量内容转化为个人私域的变现动力。
                 </p>
               </div>
-
               <div className="grid grid-cols-1 gap-4">
                 {[
                   { id: 1, title: '注册经销商', icon: UserPlus, desc: '进入小程序申请成为“搭配师”，审核通过后身份自动升级。' },
@@ -288,7 +298,6 @@ const App: React.FC = () => {
                 ))}
               </div>
             </div>
-
             <div className="relative">
               <div className="bg-[#1a1a1a] rounded-[3.5rem] p-4 shadow-2xl border-[12px] border-[#222] aspect-[9/19] max-w-[320px] mx-auto relative overflow-hidden">
                 <div className="w-full h-full bg-[#f8f8f8] rounded-[2.8rem] overflow-hidden flex flex-col relative text-black text-left">
@@ -341,34 +350,60 @@ const App: React.FC = () => {
           </div>
         </section>
 
-        {/* Section 3: Growth Ladder */}
+        {/* Growth Ladder Section */}
         <section id="ladder" className="mb-20">
-          <SectionHeader title="七级加盟晋升体系" subtitle="深度解析各层级的门槛、权益与战略定位" />
+          <SectionHeader title="晋升体系" subtitle="深度解析各层级的门槛、权益与战略定位" />
           <div className="flex flex-col lg:flex-row gap-8">
             {/* Sidebar selection */}
             <div className="lg:w-1/3 bg-white rounded-3xl shadow-lg overflow-hidden flex flex-col border border-gray-100 h-fit sticky top-24">
-              {LEVELS.map((level) => {
+              {mainLevels.map((level, index) => {
                 const Icon = iconMap[level.icon] || User;
-                const isActive = activeLevelId === level.id;
+                const isBranchPartner = level.id === 5;
+                const isActiveMain = activeLevelId === level.id;
+                const isSubActive = activeLevelId === 4; // 国风非遗馆被选中
+
                 return (
-                  <button
-                    key={level.id}
-                    onClick={() => setActiveLevelId(level.id)}
-                    className={`flex items-center p-6 text-left transition-all border-l-4 ${
-                      isActive ? 'bg-guofeng-bg border-guofeng-red' : 'border-transparent hover:bg-gray-50'
-                    }`}
-                  >
-                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center mr-5 shadow-sm ${
-                      isActive ? 'bg-guofeng-red text-white' : 'bg-gray-100 text-gray-400'
-                    }`}>
-                      <Icon size={20} />
-                    </div>
-                    <div className="flex-1">
-                      <div className={`text-[10px] font-bold uppercase mb-1 ${isActive ? 'text-guofeng-red' : 'text-gray-400'}`}>Level {level.id}</div>
-                      <div className={`font-bold text-lg ${isActive ? 'text-guofeng-ink' : 'text-gray-500'}`}>{level.title}</div>
-                    </div>
-                    {isActive && <ChevronRight className="ml-auto text-guofeng-red" size={20} />}
-                  </button>
+                  <React.Fragment key={level.id}>
+                    <button
+                      onClick={() => setActiveLevelId(level.id)}
+                      className={`flex items-center p-6 text-left transition-all border-l-4 ${
+                        isActiveMain ? 'bg-guofeng-bg border-guofeng-red' : 'border-transparent hover:bg-gray-50'
+                      }`}
+                    >
+                      <div className={`w-12 h-12 rounded-xl flex items-center justify-center mr-5 shadow-sm ${
+                        isActiveMain ? 'bg-guofeng-red text-white' : 'bg-gray-100 text-gray-400'
+                      }`}>
+                        <Icon size={20} />
+                      </div>
+                      <div className="flex-1">
+                        <div className={`text-[10px] font-bold uppercase mb-1 ${isActiveMain ? 'text-guofeng-red' : 'text-gray-400'}`}>Level {index + 1}</div>
+                        <div className={`font-bold text-lg ${isActiveMain ? 'text-guofeng-ink' : 'text-gray-500'}`}>{level.title}</div>
+                      </div>
+                      {isBranchPartner && <ChevronDown className={`ml-auto text-gray-300 transition-transform ${isActiveMain || isSubActive ? 'rotate-180 text-guofeng-red' : ''}`} size={16} />}
+                      {isActiveMain && !isBranchPartner && <ChevronRight className="ml-auto text-guofeng-red" size={20} />}
+                    </button>
+                    
+                    {/* 子节点显示：分公司合作伙伴下方 */}
+                    {isBranchPartner && museumLevel && (
+                      <div className={`overflow-hidden transition-all duration-300 bg-gray-50/50 ${isActiveMain || isSubActive ? 'max-h-24' : 'max-h-0'}`}>
+                        <button
+                          onClick={() => setActiveLevelId(4)}
+                          className={`w-full flex items-center py-4 pl-16 pr-6 text-left transition-all border-l-4 ${
+                            isSubActive ? 'bg-white border-guofeng-jade' : 'border-transparent hover:bg-gray-100'
+                          }`}
+                        >
+                          <div className={`w-8 h-8 rounded-lg flex items-center justify-center mr-4 ${isSubActive ? 'bg-guofeng-jade text-white' : 'bg-gray-200 text-gray-400'}`}>
+                            <Store size={14} />
+                          </div>
+                          <div className="flex-1">
+                            <div className={`font-bold text-sm ${isSubActive ? 'text-guofeng-ink' : 'text-gray-400'}`}>国风非遗馆</div>
+                            <div className="text-[9px] text-gray-400 uppercase">Strategic Sub-node</div>
+                          </div>
+                          {isSubActive && <ChevronRight className="ml-auto text-guofeng-jade" size={14} />}
+                        </button>
+                      </div>
+                    )}
+                  </React.Fragment>
                 );
               })}
             </div>
@@ -384,12 +419,14 @@ const App: React.FC = () => {
                    <div>
                      <div className="inline-flex items-center space-x-2 px-3 py-1 bg-guofeng-red/10 text-guofeng-red text-xs font-bold rounded-full mb-4">
                        <Zap size={12} />
-                       <span>STRATEGIC LEVEL {activeLevel.id}</span>
+                       <span>{activeLevelId === 4 ? 'SUBSIDIARY STRATEGY' : `STRATEGIC LEVEL ${getDisplayLevelNum(activeLevelId)}`}</span>
                      </div>
                      <h3 className="text-4xl md:text-5xl font-serif-zh font-bold text-guofeng-ink">{activeLevel.title}</h3>
                    </div>
                    <div className="hidden md:block w-20 h-20 border-2 border-dashed border-gray-100 rounded-full flex items-center justify-center">
-                     <div className="text-2xl font-serif-zh font-bold text-gray-200">#{activeLevel.id}</div>
+                     <div className="text-2xl font-serif-zh font-bold text-gray-200">
+                        {getDisplayLevelNum(activeLevelId)}
+                     </div>
                    </div>
                  </div>
                  
@@ -445,7 +482,7 @@ const App: React.FC = () => {
                      <div className="flex items-center space-x-3 text-guofeng-red font-bold uppercase text-xs">
                        <Target size={16} /> <span>晋升门槛</span>
                      </div>
-                     <p className="text-lg font-bold text-guofeng-ink">{activeLevel.condition}</p>
+                     <p className="text-lg font-bold text-guofeng-ink leading-relaxed">{activeLevel.condition}</p>
                    </div>
                    <div className="space-y-4">
                      <div className="flex items-center space-x-3 text-guofeng-sub font-bold uppercase text-xs">
@@ -459,7 +496,7 @@ const App: React.FC = () => {
           </div>
         </section>
 
-        {/* Section 4: Models */}
+        {/* Profit Model Section */}
         <section id="model" className="mb-20">
           <SectionHeader title="盈利模型模拟" subtitle="透明的分润体系与持续的增长动力" />
           <div className="bg-white rounded-3xl shadow-xl p-10 border border-gray-100 grid grid-cols-1 lg:grid-cols-2 gap-12">
