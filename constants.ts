@@ -1,3 +1,4 @@
+
 import { LevelDetail } from './types';
 
 export const COLORS = {
@@ -105,5 +106,6 @@ export const NAV_SECTIONS = [
   { id: 'ecosystem', title: '生态矩阵' },
   { id: 'live-system', title: '直播分佣' },
   { id: 'ladder', title: '晋升体系' },
+  { id: 'academy', title: '商学院' },
   { id: 'model', title: '盈利模型' }
 ];

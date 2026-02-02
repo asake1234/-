@@ -32,7 +32,18 @@ import {
   Upload,
   Link as LinkIcon,
   Sparkles,
-  ChevronDown
+  ChevronDown,
+  Monitor,
+  Shirt,
+  Headphones,
+  Tv,
+  Smartphone,
+  Layers,
+  ShoppingBasket,
+  UsersRound,
+  Scissors,
+  BarChart3,
+  GraduationCap
 } from 'lucide-react';
 import { 
   BarChart as RechartsBarChart, 
@@ -85,9 +96,7 @@ const App: React.FC = () => {
   const activeLevel = LEVELS.find(l => l.id === activeLevelId) || LEVELS[0];
   const museumLevel = LEVELS.find(l => l.id === 4); // 特殊处理的非遗馆
 
-  // 过滤出主序列级别（排除 ID 4，按逻辑 ID 排序显示）
   const mainLevels = LEVELS.filter(l => l.id !== 4).sort((a, b) => {
-    // 逻辑顺序：2, 3, 5, 6, 7
     const order = [2, 3, 5, 6, 7];
     return order.indexOf(a.id) - order.indexOf(b.id);
   });
@@ -158,7 +167,6 @@ const App: React.FC = () => {
 
   const ActiveIcon = iconMap[activeLevel.icon] || User;
 
-  // 获取显示的级别数字逻辑
   const getDisplayLevelNum = (id: number) => {
     const orderMap: Record<number, number> = { 2: 1, 3: 2, 5: 3, 6: 4, 7: 5 };
     return orderMap[id] || '馆';
@@ -230,7 +238,7 @@ const App: React.FC = () => {
         {/* Ecosystem Section */}
         <section id="ecosystem" className="bg-white rounded-3xl shadow-xl p-10 mb-16 border border-gray-100 relative overflow-hidden">
           <SectionHeader title="全域生态矩阵" subtitle="构建从短视频引流到实体馆沉淀的深度增长模型" />
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
             <div className="p-8 rounded-2xl bg-guofeng-bg border border-gray-100 hover:shadow-md transition-shadow">
               <div className="w-12 h-12 bg-guofeng-jade/10 rounded-xl flex items-center justify-center mb-6">
                 <TrendingUp className="text-guofeng-jade" size={24} />
@@ -353,14 +361,13 @@ const App: React.FC = () => {
         {/* Growth Ladder Section */}
         <section id="ladder" className="mb-20">
           <SectionHeader title="晋升体系" subtitle="深度解析各层级的门槛、权益与战略定位" />
-          <div className="flex flex-col lg:flex-row gap-8">
-            {/* Sidebar selection */}
+          <div className="flex flex-col lg:flex-row gap-8 text-left">
             <div className="lg:w-1/3 bg-white rounded-3xl shadow-lg overflow-hidden flex flex-col border border-gray-100 h-fit sticky top-24">
               {mainLevels.map((level, index) => {
                 const Icon = iconMap[level.icon] || User;
                 const isBranchPartner = level.id === 5;
                 const isActiveMain = activeLevelId === level.id;
-                const isSubActive = activeLevelId === 4; // 国风非遗馆被选中
+                const isSubActive = activeLevelId === 4;
 
                 return (
                   <React.Fragment key={level.id}>
@@ -382,8 +389,6 @@ const App: React.FC = () => {
                       {isBranchPartner && <ChevronDown className={`ml-auto text-gray-300 transition-transform ${isActiveMain || isSubActive ? 'rotate-180 text-guofeng-red' : ''}`} size={16} />}
                       {isActiveMain && !isBranchPartner && <ChevronRight className="ml-auto text-guofeng-red" size={20} />}
                     </button>
-                    
-                    {/* 子节点显示：分公司合作伙伴下方 */}
                     {isBranchPartner && museumLevel && (
                       <div className={`overflow-hidden transition-all duration-300 bg-gray-50/50 ${isActiveMain || isSubActive ? 'max-h-24' : 'max-h-0'}`}>
                         <button
@@ -407,13 +412,10 @@ const App: React.FC = () => {
                 );
               })}
             </div>
-
-            {/* Content Details */}
             <div className="lg:w-2/3 bg-white rounded-3xl shadow-xl p-8 md:p-12 border border-gray-100 relative overflow-hidden">
                <div className="absolute top-20 right-0 opacity-[0.03] pointer-events-none scale-150">
                  <ActiveIcon size={400} />
                </div>
-               
                <div className="relative z-10 text-left">
                  <div className="flex justify-between items-start mb-10">
                    <div>
@@ -424,13 +426,9 @@ const App: React.FC = () => {
                      <h3 className="text-4xl md:text-5xl font-serif-zh font-bold text-guofeng-ink">{activeLevel.title}</h3>
                    </div>
                    <div className="hidden md:block w-20 h-20 border-2 border-dashed border-gray-100 rounded-full flex items-center justify-center">
-                     <div className="text-2xl font-serif-zh font-bold text-gray-200">
-                        {getDisplayLevelNum(activeLevelId)}
-                     </div>
+                     <div className="text-2xl font-serif-zh font-bold text-gray-200">{getDisplayLevelNum(activeLevelId)}</div>
                    </div>
                  </div>
-                 
-                 {/* Image Area */}
                  <div className="mb-10">
                    <div className="flex items-center justify-between mb-4">
                       <div className="flex items-center space-x-3 text-guofeng-gold font-bold uppercase tracking-widest text-sm">
@@ -457,8 +455,6 @@ const App: React.FC = () => {
                      )}
                    </div>
                  </div>
-
-                 {/* Privileges List */}
                  {activeLevel.privileges && activeLevel.privileges.length > 0 && (
                     <div className="mb-12">
                       <div className="flex items-center space-x-3 text-guofeng-jade font-bold uppercase tracking-widest text-sm mb-6">
@@ -475,8 +471,6 @@ const App: React.FC = () => {
                       </div>
                     </div>
                  )}
-
-                 {/* Conditions and Role */}
                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-8 border-t border-gray-100">
                    <div className="space-y-4">
                      <div className="flex items-center space-x-3 text-guofeng-red font-bold uppercase text-xs">
@@ -496,10 +490,76 @@ const App: React.FC = () => {
           </div>
         </section>
 
+        {/* Academy Section */}
+        <section id="academy" className="bg-white rounded-3xl shadow-xl p-10 mb-16 border border-gray-100 text-left">
+          <SectionHeader title="我的搭配师非遗商学院" subtitle="系统化赋能，打造懂文化、懂产品、懂流量的全能合伙人" accent={COLORS.GOLD} />
+          
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+            {/* Left Column: Required Courses */}
+            <div className="lg:col-span-5 space-y-8">
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="p-2 bg-guofeng-red rounded-lg text-white">
+                  <GraduationCap size={20} />
+                </div>
+                <h3 className="text-2xl font-bold text-guofeng-ink font-serif-zh">必修课 · 体系根基</h3>
+              </div>
+              <div className="space-y-6">
+                {[
+                  { icon: Monitor, title: "线上系统的运用与考核", desc: "掌握小程序全链条数字化操作：邀约管理、下单跟踪、分佣结算、数据分析，通过考核即获运营认证。" },
+                  { icon: Shirt, title: "搭配师产品知识体系", desc: "深研香云纱等非遗面料特性，精通日常洗护、身形搭配及场合着装，从容解决客户专业痛点。" },
+                  { icon: Headphones, title: "中央直播间线上服务课", desc: "学习标准化线上礼仪与直播承接话术，利用总部流量漏斗实现高效促单转化。" }
+                ].map((course, i) => (
+                  <div key={i} className="group p-6 bg-guofeng-bg rounded-2xl border border-transparent hover:border-guofeng-red transition-all">
+                    <div className="flex items-center space-x-4 mb-3">
+                      <course.icon className="text-guofeng-red" size={24} />
+                      <h4 className="font-bold text-lg text-guofeng-ink">{course.title}</h4>
+                    </div>
+                    <p className="text-sm text-guofeng-sub leading-relaxed">{course.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Right Column: Elective Courses */}
+            <div className="lg:col-span-7 space-y-8">
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="p-2 bg-guofeng-jade rounded-lg text-white">
+                  <Zap size={20} />
+                </div>
+                <h3 className="text-2xl font-bold text-guofeng-ink font-serif-zh">选修课 · 增长实战</h3>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {[
+                  { icon: Tv, title: "直播运营全攻略", desc: "起号策划、带货脚本及流量分发。" },
+                  { icon: Smartphone, title: "短视频爆款公式", desc: "解析视频号/小红书算法逻辑。" },
+                  { icon: Layers, title: "多平台矩阵孵化", desc: "跨平台品牌IP化，实现全网引流。" },
+                  { icon: ShoppingBasket, title: "线下门店服务体系", desc: "陈列美学、高定邀约及到店服务标准。" },
+                  { icon: UsersRound, title: "私域沙龙策划培训", desc: "高端非遗茶会与美学雅集实操。" },
+                  { icon: Scissors, title: "视觉拍摄与后期剪辑", desc: "手机拍出大片感，掌握剪映精修技巧。" },
+                  { icon: BarChart3, title: "线上投流增长教程", desc: "商业流量投放策略，实现规模化增长。" }
+                ].map((course, i) => (
+                  <div key={i} className="flex flex-col p-5 bg-white border border-gray-100 rounded-2xl hover:shadow-md transition-shadow">
+                    <div className="flex items-center space-x-3 mb-2">
+                      <course.icon className="text-guofeng-jade opacity-70" size={18} />
+                      <h5 className="font-bold text-sm text-guofeng-ink">{course.title}</h5>
+                    </div>
+                    <p className="text-[11px] text-guofeng-sub leading-normal">{course.desc}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-6 p-6 border border-dashed border-guofeng-gold/30 rounded-2xl bg-guofeng-gold/5">
+                <p className="text-sm text-guofeng-ink/80 italic text-center">
+                  “不仅是培训，更是赋能；不仅是知识，更是工具。” —— 我的搭配师商学院
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Profit Model Section */}
         <section id="model" className="mb-20">
           <SectionHeader title="盈利模型模拟" subtitle="透明的分润体系与持续的增长动力" />
-          <div className="bg-white rounded-3xl shadow-xl p-10 border border-gray-100 grid grid-cols-1 lg:grid-cols-2 gap-12">
+          <div className="bg-white rounded-3xl shadow-xl p-10 border border-gray-100 grid grid-cols-1 lg:grid-cols-2 gap-12 text-left">
             <div className="h-72 w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <RechartsBarChart layout="vertical" data={commissionData} margin={{ left: -20, right: 30, top: 0, bottom: 0 }}>
